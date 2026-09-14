@@ -1,4 +1,15 @@
-﻿# 免费节点订阅生成器 proxy_hub
+﻿---
+AIGC:
+  ContentProducer: '001191110102MAD55U9H0F10002'
+  ContentPropagator: '001191110102MAD55U9H0F10002'
+  Label: '1'
+  ProduceID: '38a3884b-0079-419d-92dc-159c1c612dc0'
+  PropagateID: '38a3884b-0079-419d-92dc-159c1c612dc0'
+  ReservedCode1: '591f6214-c383-440c-8834-250e895b825d'
+  ReservedCode2: '591f6214-c383-440c-8834-250e895b825d'
+---
+
+# 免费节点订阅生成器 proxy_hub
 
 免费公开节点聚合 + TCP 测活 + IP 归属分类，自动生成 v2rayN / Clash.Meta 订阅。
 
@@ -51,3 +62,5 @@ python proxy_hub.py --out subs --socks5 127.0.0.1 10809
 - 免费节点来路不明，**只可用于测试**；登录任何账号前请勿使用。
 - 住宅 IP 免费且存活的数量极少（本仓库实测千余存活节点中仅十几个命中粗筛），属正常现象。
 - 源地址会定期失效，失效时到 \proxy_hub.py\ 顶部 \SOURCES\ 列表更新即可。
+
+> AI生成
