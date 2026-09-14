@@ -22,6 +22,31 @@ from urllib.parse import urlparse, parse_qs, unquote
 
 import requests
 
+# ====== 代理配置（可命令行指定，默认直连）======
+_PROXY_SOCKS5 = None  # e.g. ("127.0.0.1", 10809)
+
+
+def _setup_proxy(socks5_host=None, socks5_port=None):
+    """配置 SOCKS5 代理，用于 HTTP 请求（拉取源、查 IP 归属）。"""
+    global _PROXY_SOCKS5
+    if socks5_host and socks5_port:
+        import socks
+        import socket
+        socks.set_default_proxy(socks.SOCKS5, socks5_host, socks5_port)
+        socket.socket = socks.socksocket
+        _PROXY_SOCKS5 = (socks5_host, socks5_port)
+        log(f"[代理] SOCKS5 {_PROXY_SOCKS5[0]}:{_PROXY_SOCKS5[1]}")
+    else:
+        log("[代理] 直连模式")
+
+
+def _get_proxies():
+    """返回 requests 用的 proxies 字典（HTTP/HTTPS 走 SOCKS5）。"""
+    if _PROXY_SOCKS5:
+        return {"http": f"socks5://{_PROXY_SOCKS5[0]}:{_PROXY_SOCKS5[1]}",
+                "https": f"socks5://{_PROXY_SOCKS5[0]}:{_PROXY_SOCKS5[1]}"}
+    return None
+
 # ====== 源列表（2026-09-13 实测可用；失效源已剔除）======
 SOURCES = [
     "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt",
@@ -56,7 +81,8 @@ def fetch_all(limit_per_source=20000):
     lines, seen_raw = [], set()
     for src in SOURCES:
         try:
-            r = requests.get(src, timeout=25, headers={"User-Agent": "Mozilla/5.0"})
+            r = requests.get(src, timeout=25, headers={"User-Agent": "Mozilla/5.0"},
+                             proxies=_get_proxies())
             if r.status_code != 200:
                 log(f"[源跳过] {r.status_code} {src}")
                 continue
@@ -174,6 +200,7 @@ def geo_ips(ips):
                 "http://ip-api.com/batch",
                 json=[{"query": ip, "fields": fields} for ip in chunk],
                 timeout=30,
+                proxies=_get_proxies(),
             )
             if r.status_code == 200:
                 data = r.json()
@@ -303,7 +330,12 @@ def main():
     ap.add_argument("--skip-test", action="store_true", help="跳过TCP测活")
     ap.add_argument("--limit", type=int, default=8000, help="最多测活节点数")
     ap.add_argument("--geo", action="store_true", default=True, help="对存活节点做IP归属查询")
+    ap.add_argument("--socks5", nargs=2, metavar=("HOST", "PORT"),
+                    help="SOCKS5 代理地址（如 127.0.0.1 10809），用于拉取源和查归属")
     args = ap.parse_args()
+
+    # 配置代理
+    _setup_proxy(*args.socks5 if args.socks5 else (None, None))
 
     t0 = time.time()
     raw_lines = fetch_all()

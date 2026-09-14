@@ -1,0 +1,77 @@
+{
+  "generated": "2026-09-13 07:37 UTC",
+  "sources": [
+    "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Config/main/All_Configs_Sub.txt",
+    "https://raw.githubusercontent.com/3inker/v2ray-subscription/main/subs/all_ru.txt"
+  ],
+  "fetched": 13257,
+  "parsed": 4128,
+  "tested": 4128,
+  "alive": 1063,
+  "alive_rate": "25.8%",
+  "residential": 19,
+  "top_countries": [
+    [
+      "CA",
+      345
+    ],
+    [
+      "??",
+      316
+    ],
+    [
+      "US",
+      194
+    ],
+    [
+      "DE",
+      42
+    ],
+    [
+      "RU",
+      31
+    ],
+    [
+      "NL",
+      19
+    ],
+    [
+      "FI",
+      13
+    ],
+    [
+      "SC",
+      8
+    ],
+    [
+      "GB",
+      8
+    ],
+    [
+      "FR",
+      7
+    ],
+    [
+      "NO",
+      7
+    ],
+    [
+      "IR",
+      7
+    ],
+    [
+      "PL",
+      6
+    ],
+    [
+      "ES",
+      5
+    ],
+    [
+      "SE",
+      5
+    ]
+  ],
+  "elapsed_sec": 91.1
+}

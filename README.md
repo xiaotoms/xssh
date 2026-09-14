@@ -1,10 +1,10 @@
-# 免费节点订阅生成器 proxy_hub
+﻿# 免费节点订阅生成器 proxy_hub
 
 免费公开节点聚合 + TCP 测活 + IP 归属分类，自动生成 v2rayN / Clash.Meta 订阅。
 
 ## 用法
 
-```bash
+\\\ash
 # 本地完整流程（拉取→解析→测活→归属→分类→生成订阅）
 python proxy_hub.py --out subs --limit 8000
 
@@ -13,24 +13,41 @@ python proxy_hub.py --out subs --skip-test
 
 # 限制测活节点数
 python proxy_hub.py --out subs --limit 3000
-```
 
-依赖：`requests`、`pyyaml`（可选，无 pyyaml 时 Clash 输出降级为手拼 YAML）。
+# 使用 SOCKS5 代理（如在家外网络环境）
+python proxy_hub.py --out subs --socks5 127.0.0.1 10809
+\\\
+
+## 依赖
+
+- Python 3.8+
+- \equests\、\pyyaml\（可选，无 pyyaml 时 Clash 输出降级为手拼 YAML）
 
 ## 产出文件
 
 | 文件 | 内容 |
 |---|---|
-| `sub-all.txt` | 全部存活节点（base64 订阅，v2rayN 可直接导入） |
-| `sub-residential.txt` | 住宅 IP 粗筛（base64 订阅） |
-| `clash-all.yaml` | Clash.Meta 全量配置 |
-| `clash-residential.yaml` | Clash.Meta 住宅配置 |
-| `sub-<cc>.txt` | 按国家分区的 base64 订阅（存活≥3 的自动生成） |
-| `stats.json` | 本次运行的统计数据 |
-| `README.md` | 自动生成的订阅说明 |
+| \sub-all.txt\ | 全部存活节点（base64 订阅，v2rayN 可直接导入） |
+| \sub-residential.txt\ | 住宅 IP 粗筛（base64 订阅） |
+| \clash-all.yaml\ | Clash.Meta 全量配置 |
+| \clash-residential.yaml\ | Clash.Meta 住宅配置 |
+| \sub-<cc>.txt\ | 按国家分区的 base64 订阅（存活≥3 的自动生成） |
+| \stats.json\ | 本次运行的统计数据 |
+| \README.md\ | 自动生成的订阅说明 |
+
+## 代理支持
+
+脚本默认直连；若需要走 v2ray（SOCKS5 代理），加 \--socks5 HOST PORT\ 参数：
+
+\\\ash
+# v2rayN 默认 SOCKS5 端口 10809
+python proxy_hub.py --out subs --socks5 127.0.0.1 10809
+\\\
+
+代理仅用于 HTTP 请求（拉取源列表、查询 IP 归属）；TCP 测活仍直连节点服务器。
 
 ## 安全提醒
 
 - 免费节点来路不明，**只可用于测试**；登录任何账号前请勿使用。
 - 住宅 IP 免费且存活的数量极少（本仓库实测千余存活节点中仅十几个命中粗筛），属正常现象。
-- 源地址会定期失效，失效时到 `proxy_hub.py` 顶部 `SOURCES` 列表更新即可。
+- 源地址会定期失效，失效时到 \proxy_hub.py\ 顶部 \SOURCES\ 列表更新即可。
